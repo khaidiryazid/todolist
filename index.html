@@ -301,7 +301,24 @@
     font-size:12px;
     color:var(--ink-dim);
     font-weight:700;
+    flex-wrap:wrap;
+    gap:10px;
   }
+  .foot-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .foot-btn{
+    background:none; border:none;
+    color:var(--ink-dim);
+    cursor:pointer;
+    font-weight:700;
+    font-size:12px;
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .foot-btn:hover{ color:var(--ink); }
   .clear-done{
     background:none; border:none;
     color:var(--ink-faint);
@@ -379,8 +396,13 @@
 
   <div class="sheet-foot">
     <span id="counter">0 tugas tersisa</span>
-    <button class="clear-done" id="clearDone">Hapus yang selesai</button>
+    <div class="foot-actions">
+      <button class="foot-btn" id="exportBtn">Ekspor</button>
+      <button class="foot-btn" id="importBtn">Impor</button>
+      <button class="clear-done" id="clearDone">Hapus yang selesai</button>
+    </div>
   </div>
+  <input type="file" id="importInput" accept="application/json" style="display:none">
 </div>
 
 <script>
@@ -691,6 +713,56 @@
   });
 
   document.getElementById('clearDone').addEventListener('click', clearDone);
+
+  function exportData(){
+    const payload = { projects, tasks, exportedAt: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+    const url = URL.createObjectURL(blob);
+    const stamp = new Date().toISOString().slice(0,10);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `daftar-tugas-${stamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function importData(file){
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try{
+        const parsed = JSON.parse(e.target.result);
+        if(parsed && Array.isArray(parsed.projects) && Array.isArray(parsed.tasks)){
+          const ok = window.confirm('Impor akan mengganti semua data yang ada sekarang dengan isi file backup. Lanjutkan?');
+          if(!ok) return;
+          projects = parsed.projects.length ? parsed.projects : [{ id:'general', name:'Umum' }];
+          tasks = parsed.tasks;
+          activeProject = 'all';
+          saveData();
+          renderProjects();
+          render();
+        } else {
+          window.alert('File ini bukan file backup daftar tugas yang valid.');
+        }
+      }catch(err){
+        window.alert('Gagal membaca file. Pastikan ini file backup .json yang benar.');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  document.getElementById('exportBtn').addEventListener('click', exportData);
+
+  document.getElementById('importBtn').addEventListener('click', () => {
+    document.getElementById('importInput').click();
+  });
+
+  document.getElementById('importInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(file) importData(file);
+    e.target.value = '';
+  });
 
   setToday();
   loadData();
