@@ -2,10 +2,13 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Daftar Tugas</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#6b4a30">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -317,6 +320,41 @@
     font-size:12px;
   }
   .clear-done:hover{ color:var(--danger); }
+
+  /* --- mobile --- */
+  @media (max-width: 600px){
+    body{ padding:0; align-items:flex-start; }
+    .sheet{
+      border-radius:0;
+      min-height:100vh;
+      box-shadow:none;
+      padding-bottom:env(safe-area-inset-bottom);
+    }
+    .sheet-head{ padding:22px 20px 16px; padding-top:calc(22px + env(safe-area-inset-top)); }
+    h1{ font-size:28px; }
+    .themes{ gap:8px; }
+    .theme-dot{ width:22px; height:22px; }
+    .fonts{ gap:8px; }
+    .font-btn{ width:36px; height:32px; font-size:15px; }
+    .projects{ padding:14px 20px 4px; }
+    .chip, .chip-add{ padding:9px 15px; font-size:13px; }
+    .composer{ padding:14px 20px 4px; }
+    .composer input{ font-size:16px; padding:13px 16px; }
+    .composer button{ padding:0 18px; font-size:13px; }
+    .filters{ padding:14px 20px 4px; }
+    .filters button{ padding:11px 0; font-size:12px; }
+    .list-label{ margin:16px 20px 8px; font-size:15px; }
+    .list-wrap{ margin:0 20px 6px; }
+    li.task{ padding:13px 14px; }
+    .check{ width:22px; height:22px; }
+    .del{ font-size:20px; padding:4px 6px; }
+    .sheet-foot{ padding:14px 20px 22px; flex-wrap:wrap; gap:8px; }
+  }
+
+  @media (max-width: 360px){
+    h1{ font-size:24px; }
+    .composer button{ padding:0 14px; }
+  }
 </style>
 </head>
 <body>
