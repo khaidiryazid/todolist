@@ -47,14 +47,51 @@
   }
 
   .sheet{
+    position:relative;
     width:100%;
     max-width:560px;
     background:var(--card);
+    background-size:cover;
+    background-position:center;
     border-radius:28px;
     overflow:hidden;
     box-shadow: 0 18px 40px rgba(61,43,31,0.12);
     transition:background-color .25s ease;
   }
+
+  .sheet-overlay{
+    position:absolute;
+    inset:0;
+    background:var(--card);
+    opacity:.88;
+    z-index:0;
+    pointer-events:none;
+    transition:background-color .25s ease;
+  }
+
+  .sheet > *:not(.sheet-overlay){
+    position:relative;
+    z-index:1;
+  }
+
+  .wallpaper-row{
+    display:flex;
+    gap:8px;
+    margin-bottom:12px;
+  }
+  .wp-btn{
+    background:var(--stripe);
+    border:none;
+    color:var(--ink-dim);
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:11.5px;
+    padding:6px 12px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .wp-btn:hover{ color:var(--ink); }
+  .wp-reset.hidden{ display:none; }
 
   /* --- header --- */
   .sheet-head{ padding:26px 30px 18px; }
@@ -272,6 +309,31 @@
   }
   .task-meta .sep{ margin:0 5px; }
 
+  .edit-input{
+    display:block;
+    width:100%;
+    font-family:var(--hand);
+    font-size:18px;
+    font-weight:700;
+    color:var(--ink);
+    background:transparent;
+    border:none;
+    border-bottom:2px solid var(--accent);
+    outline:none;
+    padding:0 0 2px;
+  }
+
+  .edit-btn{
+    flex:none;
+    background:none; border:none;
+    color:var(--ink-faint);
+    cursor:pointer;
+    font-size:15px;
+    line-height:1;
+    padding:2px 4px;
+  }
+  .edit-btn:hover{ color:var(--accent); }
+
   .del{
     flex:none;
     background:none; border:none;
@@ -479,13 +541,19 @@
 </head>
 <body>
 
-<div class="sheet">
+<div class="sheet" id="sheet">
+  <div class="sheet-overlay"></div>
   <div class="sheet-head">
     <div class="head-top">
       <div class="badge"><span class="dots"><span></span><span></span></span></div>
       <div class="themes" id="themes"></div>
     </div>
     <div class="fonts" id="fonts"></div>
+    <div class="wallpaper-row">
+      <button id="wallpaperBtn" class="wp-btn" title="Ganti wallpaper">🖼️ Wallpaper</button>
+      <button id="wallpaperResetBtn" class="wp-btn wp-reset hidden" title="Hapus wallpaper">✕ Hapus</button>
+      <input type="file" id="wallpaperInput" accept="image/*" style="display:none">
+    </div>
     <h1>Daftar Tugas</h1>
     <span class="date" id="today"></span>
   </div>
@@ -577,6 +645,49 @@
   const projectsEl = document.getElementById('projects');
   const themesEl = document.getElementById('themes');
   const fontsEl = document.getElementById('fonts');
+  const sheetEl = document.getElementById('sheet');
+  const wallpaperBtn = document.getElementById('wallpaperBtn');
+  const wallpaperResetBtn = document.getElementById('wallpaperResetBtn');
+  const wallpaperInput = document.getElementById('wallpaperInput');
+
+  const WALLPAPER_KEY = 'todo-list-wallpaper-v1';
+
+  function applyWallpaper(dataUrl){
+    sheetEl.style.backgroundImage = dataUrl ? `url(${dataUrl})` : 'none';
+    wallpaperResetBtn.classList.toggle('hidden', !dataUrl);
+  }
+
+  function processWallpaperFile(file){
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const maxW = 1080;
+        let width = img.width, height = img.height;
+        if(width > maxW){ height = Math.round(height * (maxW / width)); width = maxW; }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+        applyWallpaper(dataUrl);
+        try{ localStorage.setItem(WALLPAPER_KEY, dataUrl); }
+        catch(err){ window.alert('Foto ini kebesaran buat disimpan otomatis. Coba pakai foto lain (ukuran lebih kecil).'); }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  wallpaperBtn.addEventListener('click', () => wallpaperInput.click());
+  wallpaperInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(file) processWallpaperFile(file);
+    e.target.value = '';
+  });
+  wallpaperResetBtn.addEventListener('click', () => {
+    applyWallpaper(null);
+    try{ localStorage.removeItem(WALLPAPER_KEY); }catch(e){}
+  });
 
   function applyFont(name){
     const font = FONTS[name] || FONTS.kalam;
@@ -791,6 +902,7 @@
             <span class="task-text">${escapeHtml(t.text)}</span>
             <span class="task-meta">${projectTag}${createdTag}${doneTag}</span>
           </span>
+          <button class="edit-btn" data-id="${t.id}" aria-label="Edit tugas">✎</button>
           <button class="del" data-id="${t.id}" aria-label="Hapus tugas">×</button>
         `;
         listEl.appendChild(li);
@@ -807,6 +919,42 @@
     return div.innerHTML;
   }
 
+  function startEditTask(id, liEl){
+    const t = tasks.find(x => x.id === id);
+    if(!t) return;
+    const textEl = liEl.querySelector('.task-text');
+    if(!textEl) return;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'edit-input';
+    input.value = t.text;
+    textEl.replaceWith(input);
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+
+    let done = false;
+    function commit(){
+      if(done) return;
+      done = true;
+      const val = input.value.trim();
+      if(val) t.text = val;
+      saveData();
+      render();
+    }
+    function cancel(){
+      if(done) return;
+      done = true;
+      render();
+    }
+
+    input.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){ commit(); }
+      else if(e.key === 'Escape'){ cancel(); }
+    });
+    input.addEventListener('blur', commit);
+  }
+
   document.getElementById('addBtn').addEventListener('click', () => {
     addTask(inputEl.value);
     inputEl.value = '';
@@ -820,8 +968,10 @@
   listEl.addEventListener('click', (e) => {
     const checkEl = e.target.closest('.check');
     const delEl = e.target.closest('.del');
+    const editEl = e.target.closest('.edit-btn');
     if(checkEl) toggleTask(checkEl.dataset.id);
     if(delEl) deleteTask(delEl.dataset.id);
+    if(editEl) startEditTask(editEl.dataset.id, editEl.closest('li.task'));
   });
 
   document.querySelectorAll('.filters button').forEach(btn => {
@@ -899,6 +1049,11 @@
 
   renderProjects();
   render();
+
+  try{
+    const savedWallpaper = localStorage.getItem(WALLPAPER_KEY);
+    if(savedWallpaper) applyWallpaper(savedWallpaper);
+  }catch(e){}
 
   // === MUSIK LATAR ===
   // Tambahkan file mp3 milik Anda sendiri (yang Anda punya haknya) ke folder
