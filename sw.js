@@ -1,6 +1,6 @@
 const CACHE_NAME = 'todo-list-cache-v1';
 const FILES_TO_CACHE = [
-  './todo-list.html',
+  './index.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'

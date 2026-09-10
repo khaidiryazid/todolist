@@ -2,7 +2,7 @@
   "name": "Daftar Tugas",
   "short_name": "Tugas",
   "description": "To-do list harian dengan proyek dan tema.",
-  "start_url": "./todo-list.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#ede1d0",
