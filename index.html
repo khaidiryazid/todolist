@@ -228,20 +228,8 @@
   .filters button.active{ background:var(--pill); border-color:var(--pill); color:var(--pill-ink); }
 
   /* --- list section --- */
-  .list-label{
-    margin:18px 30px 10px;
-    display:inline-block;
-    background:var(--pill);
-    color:var(--pill-ink);
-    font-family:var(--hand);
-    font-size:16px;
-    font-weight:700;
-    padding:6px 20px;
-    border-radius:999px;
-  }
-
   .list-wrap{
-    margin:0 30px 6px;
+    margin:20px 30px 6px;
     border-radius:16px;
     overflow:hidden;
   }
@@ -252,9 +240,11 @@
     display:flex;
     align-items:flex-start;
     gap:12px;
-    padding:13px 16px;
+    padding:15px 16px;
     background:var(--card);
+    border-bottom:1px solid var(--line);
   }
+  li.task:last-child{ border-bottom:none; }
   li.task:nth-child(even){ background:var(--stripe); }
 
   .check{
@@ -271,12 +261,12 @@
   .check.checked svg{ opacity:1; }
 
   .task-body{ flex:1; min-width:0; }
-  .task-text{ font-size:14px; font-weight:700; line-height:1.4; word-break:break-word; }
+  .task-text{ font-size:16px; font-weight:700; line-height:1.4; word-break:break-word; }
   li.task.done .task-text{ color:var(--done); text-decoration:line-through; }
 
   .task-meta{
-    margin-top:3px;
-    font-size:11px;
+    margin-top:4px;
+    font-size:12px;
     color:var(--ink-faint);
     font-weight:600;
   }
@@ -343,8 +333,7 @@
     .composer button{ padding:0 18px; font-size:13px; }
     .filters{ padding:14px 20px 4px; }
     .filters button{ padding:11px 0; font-size:12px; }
-    .list-label{ margin:16px 20px 8px; font-size:15px; }
-    .list-wrap{ margin:0 20px 6px; }
+    .list-wrap{ margin:16px 20px 6px; }
     li.task{ padding:13px 14px; }
     .check{ width:22px; height:22px; }
     .del{ font-size:20px; padding:4px 6px; }
@@ -384,7 +373,6 @@
     <button data-filter="done">SELESAI</button>
   </div>
 
-  <span class="list-label" id="listLabel">Belum Selesai</span>
   <div class="list-wrap">
     <ul class="list" id="list"></ul>
   </div>
@@ -447,7 +435,6 @@
   const projectsEl = document.getElementById('projects');
   const themesEl = document.getElementById('themes');
   const fontsEl = document.getElementById('fonts');
-  const listLabelEl = document.getElementById('listLabel');
 
   function applyFont(name){
     const font = FONTS[name] || FONTS.kalam;
@@ -632,7 +619,6 @@
   }
 
   function render(){
-    listLabelEl.textContent = filter === 'done' ? 'Selesai' : 'Belum Selesai';
     listEl.innerHTML = '';
 
     let filtered = tasks.filter(t => filter === 'done' ? t.done : !t.done);
