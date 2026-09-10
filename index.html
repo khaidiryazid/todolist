@@ -149,9 +149,9 @@
     background:var(--stripe);
     border:none;
     color:var(--ink-dim);
-    font-family:var(--sans);
+    font-family:var(--hand);
     font-weight:700;
-    font-size:12.5px;
+    font-size:14px;
     padding:8px 14px;
     border-radius:999px;
     cursor:pointer;
@@ -166,9 +166,9 @@
     background:none;
     border:1.5px dashed var(--ink-faint);
     color:var(--ink-dim);
-    font-family:var(--sans);
+    font-family:var(--hand);
     font-weight:700;
-    font-size:12.5px;
+    font-size:14px;
     padding:7px 14px;
     border-radius:999px;
     cursor:pointer;
@@ -199,9 +199,9 @@
     color:var(--pill-ink);
     border:none;
     padding:0 22px;
-    font-family:var(--sans);
-    font-size:13px;
-    font-weight:800;
+    font-family:var(--hand);
+    font-size:16px;
+    font-weight:700;
     border-radius:999px;
     cursor:pointer;
   }
@@ -217,9 +217,9 @@
     background:transparent;
     border:2px solid var(--stripe);
     color:var(--ink-dim);
-    font-family:var(--sans);
-    font-weight:800;
-    font-size:12px;
+    font-family:var(--hand);
+    font-weight:700;
+    font-size:14px;
     letter-spacing:.02em;
     padding:9px 0;
     border-radius:999px;
@@ -261,7 +261,7 @@
   .check.checked svg{ opacity:1; }
 
   .task-body{ flex:1; min-width:0; }
-  .task-text{ font-size:16px; font-weight:700; line-height:1.4; word-break:break-word; }
+  .task-text{ font-family:var(--hand); font-size:18px; font-weight:700; line-height:1.4; word-break:break-word; }
   li.task.done .task-text{ color:var(--done); text-decoration:line-through; }
 
   .task-meta{
@@ -298,7 +298,8 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
-    font-size:12px;
+    font-family:var(--hand);
+    font-size:15px;
     color:var(--ink-dim);
     font-weight:700;
     flex-wrap:wrap;
@@ -313,8 +314,9 @@
     background:none; border:none;
     color:var(--ink-dim);
     cursor:pointer;
+    font-family:var(--hand);
     font-weight:700;
-    font-size:12px;
+    font-size:15px;
     text-decoration:underline;
     text-underline-offset:2px;
   }
@@ -323,10 +325,122 @@
     background:none; border:none;
     color:var(--ink-faint);
     cursor:pointer;
+    font-family:var(--hand);
     font-weight:700;
-    font-size:12px;
+    font-size:15px;
   }
   .clear-done:hover{ color:var(--danger); }
+
+  .music-bar{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    z-index:60;
+  }
+  .music-btn{
+    width:46px; height:46px;
+    border-radius:50%;
+    border:none;
+    background:var(--pill);
+    color:var(--pill-ink);
+    font-size:18px;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .music-next{ width:36px; height:36px; font-size:14px; opacity:.9; }
+  .music-next.hidden{ display:none; }
+
+  /* ====================================================== */
+  /* THEME-SPECIFIC STRUCTURE (bukan cuma warna, tapi gaya)  */
+  /* ====================================================== */
+
+  /* ---------- 1. Minimalist ---------- */
+  body[data-theme="minimalist"]{ background:var(--bg); }
+  body[data-theme="minimalist"] .sheet{
+    border-radius:10px; box-shadow:none; border:1px solid var(--line);
+  }
+  body[data-theme="minimalist"] .torn{ display:none; }
+  body[data-theme="minimalist"] .head-top{ margin-bottom:22px; }
+  body[data-theme="minimalist"] h1{ font-weight:800; letter-spacing:-.02em; }
+  body[data-theme="minimalist"] .badge{ border-radius:4px; }
+  body[data-theme="minimalist"] .chip, body[data-theme="minimalist"] .chip-add{ border-radius:4px; background:transparent; border:1px solid var(--line); }
+  body[data-theme="minimalist"] .chip.active{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  body[data-theme="minimalist"] .composer input{ border-radius:4px; border:1px solid var(--line); }
+  body[data-theme="minimalist"] .composer button{ border-radius:4px; }
+  body[data-theme="minimalist"] .filters button{ border-radius:4px; border-color:var(--line); }
+  body[data-theme="minimalist"] .list-wrap{ border-radius:4px; border:1px solid var(--line); }
+  body[data-theme="minimalist"] li.task{ border-bottom:1px solid var(--line); }
+  body[data-theme="minimalist"] li.task:nth-child(even){ background:var(--card); }
+  body[data-theme="minimalist"] .check{ border-radius:4px; }
+  body[data-theme="minimalist"] .theme-dot, body[data-theme="minimalist"] .font-btn{ border-radius:4px; }
+
+  /* ---------- 2. Glassmorphism ---------- */
+  body[data-theme="glass"]{
+    background: linear-gradient(135deg,#8ec5fc 0%,#a78bfa 45%,#f6a6c1 100%);
+    background-attachment: fixed;
+  }
+  body[data-theme="glass"] .sheet{
+    background: rgba(255,255,255,0.18);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    border:1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 8px 32px rgba(31,38,135,0.25);
+  }
+  body[data-theme="glass"] .torn{ display:none; }
+  body[data-theme="glass"] .badge{ background:rgba(255,255,255,0.35); }
+  body[data-theme="glass"] .chip, body[data-theme="glass"] .chip-add{
+    background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.35); backdrop-filter: blur(6px);
+  }
+  body[data-theme="glass"] .chip.active{ background:rgba(255,255,255,0.5); color:var(--ink); }
+  body[data-theme="glass"] .composer input{ background:rgba(255,255,255,0.22); border:1px solid rgba(255,255,255,0.35); }
+  body[data-theme="glass"] .composer button{ background:rgba(255,255,255,0.35); border:1px solid rgba(255,255,255,0.45); color:var(--ink); backdrop-filter: blur(6px); }
+  body[data-theme="glass"] .filters button{ border:1px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.1); }
+  body[data-theme="glass"] .filters button.active{ background:rgba(255,255,255,0.4); }
+  body[data-theme="glass"] .list-wrap{ background:rgba(255,255,255,0.08); }
+  body[data-theme="glass"] li.task{ background:transparent !important; border-bottom:1px solid rgba(255,255,255,0.22); }
+  body[data-theme="glass"] li.task:nth-child(even){ background:rgba(255,255,255,0.1) !important; }
+  body[data-theme="glass"] .empty{ background:transparent; }
+  body[data-theme="glass"] .check{ background:rgba(255,255,255,0.2); }
+  body[data-theme="glass"] .theme-dot.active, body[data-theme="glass"] .font-btn.active{ border-color:var(--ink); }
+
+  /* ---------- 3. Neo-Brutalism ---------- */
+  body[data-theme="brutalism"]{ background:var(--bg); }
+  body[data-theme="brutalism"] .sheet{
+    border:3px solid var(--line); border-radius:6px; box-shadow:9px 9px 0 var(--line);
+  }
+  body[data-theme="brutalism"] .torn{ display:none; }
+  body[data-theme="brutalism"] h1{ font-weight:900; letter-spacing:-.01em; }
+  body[data-theme="brutalism"] .badge{ border-radius:4px; border:2px solid var(--line); }
+  body[data-theme="brutalism"] .chip, body[data-theme="brutalism"] .chip-add{
+    border:2px solid var(--line); border-radius:5px; box-shadow:3px 3px 0 var(--line); font-weight:800;
+  }
+  body[data-theme="brutalism"] .chip.active{ background:var(--accent); color:#fff; }
+  body[data-theme="brutalism"] .composer input{ border:2px solid var(--line); border-radius:5px; background:#fff; }
+  body[data-theme="brutalism"] .composer button{ border:2px solid var(--line); border-radius:5px; box-shadow:3px 3px 0 var(--line); font-weight:900; }
+  body[data-theme="brutalism"] .filters button{ border:2px solid var(--line); border-radius:5px; font-weight:900; }
+  body[data-theme="brutalism"] .filters button.active{ box-shadow:3px 3px 0 var(--line); }
+  body[data-theme="brutalism"] .list-wrap{ border:2px solid var(--line); border-radius:6px; }
+  body[data-theme="brutalism"] li.task{ border-bottom:2px solid var(--line); }
+  body[data-theme="brutalism"] .task-text{ font-weight:800; }
+  body[data-theme="brutalism"] .check{ border:2px solid var(--line); border-radius:4px; }
+  body[data-theme="brutalism"] .theme-dot, body[data-theme="brutalism"] .font-btn{ border-radius:4px; border:2px solid var(--line); }
+  body[data-theme="brutalism"] .theme-dot.active, body[data-theme="brutalism"] .font-btn.active{ border-color:var(--accent); }
+
+  /* ---------- 4. Dark Mode ---------- */
+  body[data-theme="dark"]{ background:var(--bg); }
+  body[data-theme="dark"] .sheet{
+    border-radius:20px; border:1px solid var(--line); box-shadow:0 0 44px rgba(34,211,238,0.09);
+  }
+  body[data-theme="dark"] .torn{ display:none; }
+  body[data-theme="dark"] .composer button{ box-shadow:0 0 16px rgba(34,211,238,0.35); }
+  body[data-theme="dark"] .chip.active{ box-shadow:0 0 12px rgba(34,211,238,0.35); }
+  body[data-theme="dark"] .filters button.active{ box-shadow:0 0 12px rgba(34,211,238,0.3); }
+  body[data-theme="dark"] .check.checked{ box-shadow:0 0 10px rgba(34,211,238,0.55); }
+  body[data-theme="dark"] .theme-dot.active, body[data-theme="dark"] .font-btn.active{ border-color:var(--accent); }
 
   /* --- mobile --- */
   @media (max-width: 600px){
@@ -405,34 +519,40 @@
   <input type="file" id="importInput" accept="application/json" style="display:none">
 </div>
 
+<audio id="bgAudio" loop preload="none"></audio>
+<div class="music-bar">
+  <button id="musicToggle" class="music-btn" aria-label="Putar/matikan musik">🔈</button>
+  <button id="musicNext" class="music-btn music-next" aria-label="Lagu berikutnya">⏭</button>
+</div>
+
 <script>
   const STORAGE_KEY = 'todo-list-items-v3';
   const THEME_KEY = 'todo-list-theme-v2';
 
   const THEMES = {
-    kraft: {
-      label:'Kraft', swatch:'#6b4a30',
-      vars:{ '--bg':'#ede1d0', '--card':'#f8f1e6', '--stripe':'#e6d5b9', '--pill':'#6b4a30', '--pill-ink':'#f8f1e6',
-        '--ink':'#3d2b1f', '--ink-dim':'#7a6752', '--ink-faint':'#a89579', '--accent':'#6b4a30',
-        '--accent-wash':'rgba(107,74,48,0.12)', '--line':'#e2d2b6', '--done':'#b9ab93', '--danger':'#a1462f' }
+    minimalist: {
+      label:'Minimalist', swatch:'#111111',
+      vars:{ '--bg':'#ffffff', '--card':'#ffffff', '--stripe':'#f6f6f6', '--pill':'#111111', '--pill-ink':'#ffffff',
+        '--ink':'#111111', '--ink-dim':'#666666', '--ink-faint':'#9a9a9a', '--accent':'#111111',
+        '--accent-wash':'rgba(17,17,17,0.06)', '--line':'#e6e6e6', '--done':'#c7c7c7', '--danger':'#d64545' }
     },
-    sage: {
-      label:'Sage', swatch:'#4a6b3f',
-      vars:{ '--bg':'#e7ede0', '--card':'#f5f8f0', '--stripe':'#dbe6cd', '--pill':'#4a6b3f', '--pill-ink':'#f5f8f0',
-        '--ink':'#2b3324', '--ink-dim':'#63735a', '--ink-faint':'#96a68c', '--accent':'#4a6b3f',
-        '--accent-wash':'rgba(74,107,63,0.12)', '--line':'#d3ddc5', '--done':'#a9b89e', '--danger':'#a1462f' }
+    glass: {
+      label:'Glass', swatch:'#8ec5fc',
+      vars:{ '--bg':'#a78bfa', '--card':'#ffffff', '--stripe':'#f0f0fb', '--pill':'#5b57d1', '--pill-ink':'#ffffff',
+        '--ink':'#232946', '--ink-dim':'#4b5079', '--ink-faint':'#7d82ab', '--accent':'#5b57d1',
+        '--accent-wash':'rgba(91,87,209,0.18)', '--line':'#d8daf0', '--done':'#a6abd6', '--danger':'#e0576b' }
     },
-    blush: {
-      label:'Blush', swatch:'#9c4f4a',
-      vars:{ '--bg':'#f3e2df', '--card':'#fbf2f0', '--stripe':'#eecfc9', '--pill':'#9c4f4a', '--pill-ink':'#fbf2f0',
-        '--ink':'#3a2422', '--ink-dim':'#7a5b58', '--ink-faint':'#b89490', '--accent':'#9c4f4a',
-        '--accent-wash':'rgba(156,79,74,0.12)', '--line':'#e8cec9', '--done':'#d1aca8', '--danger':'#7a3530' }
+    brutalism: {
+      label:'Brutalism', swatch:'#ff3ea5',
+      vars:{ '--bg':'#fdf6e3', '--card':'#ffffff', '--stripe':'#ffe347', '--pill':'#111111', '--pill-ink':'#ffe347',
+        '--ink':'#111111', '--ink-dim':'#111111', '--ink-faint':'#555555', '--accent':'#2f6fed',
+        '--accent-wash':'rgba(47,111,237,0.15)', '--line':'#111111', '--done':'#9c9c9c', '--danger':'#ff3b3b' }
     },
-    slate: {
-      label:'Slate', swatch:'#445159',
-      vars:{ '--bg':'#e6e5df', '--card':'#f5f4ef', '--stripe':'#d9d7cd', '--pill':'#445159', '--pill-ink':'#f5f4ef',
-        '--ink':'#2c3236', '--ink-dim':'#626b6f', '--ink-faint':'#9aa1a3', '--accent':'#445159',
-        '--accent-wash':'rgba(68,81,89,0.12)', '--line':'#d3d2c7', '--done':'#b5bcbe', '--danger':'#a4523f' }
+    dark: {
+      label:'Dark', swatch:'#22d3ee',
+      vars:{ '--bg':'#0b0d10', '--card':'#12161b', '--stripe':'#181d23', '--pill':'#22d3ee', '--pill-ink':'#04181a',
+        '--ink':'#e7f1ee', '--ink-dim':'#93a3a0', '--ink-faint':'#57635f', '--accent':'#22d3ee',
+        '--accent-wash':'rgba(34,211,238,0.12)', '--line':'#242a30', '--done':'#3d4750', '--danger':'#ff5c7a' }
     }
   };
 
@@ -513,8 +633,9 @@
   }
 
   function applyTheme(name){
-    const theme = THEMES[name] || THEMES.kraft;
+    const theme = THEMES[name] || THEMES.minimalist;
     Object.entries(theme.vars).forEach(([k,v]) => document.documentElement.style.setProperty(k, v));
+    document.body.setAttribute('data-theme', THEMES[name] ? name : 'minimalist');
     try{ localStorage.setItem(THEME_KEY, name); }catch(e){}
     renderThemeSwitcher(name);
   }
@@ -767,8 +888,9 @@
   setToday();
   loadData();
 
-  let savedTheme = 'kraft';
-  try{ savedTheme = localStorage.getItem(THEME_KEY) || 'kraft'; }catch(e){}
+  let savedTheme = 'minimalist';
+  try{ savedTheme = localStorage.getItem(THEME_KEY) || 'minimalist'; }catch(e){}
+  if(!THEMES[savedTheme]) savedTheme = 'minimalist';
   applyTheme(savedTheme);
 
   let savedFont = 'kalam';
@@ -777,6 +899,69 @@
 
   renderProjects();
   render();
+
+  // === MUSIK LATAR ===
+  // Tambahkan file mp3 milik Anda sendiri (yang Anda punya haknya) ke folder
+  // "audio/" di repo, lalu isi daftar di bawah ini. Bisa satu lagu atau lebih —
+  // kalau lebih dari satu, akan otomatis lanjut ke lagu berikutnya dan tombol
+  // "lagu berikutnya" akan muncul.
+  const PLAYLIST = [
+    // { title: 'Tulus - Teh Hijau', src: 'audio/teh-hijau.mp3' },
+    // { title: 'Lagu Lain', src: 'audio/lagu-lain.mp3' },
+  ];
+
+  let currentTrack = 0;
+  let isPlaying = false;
+  const audioEl = document.getElementById('bgAudio');
+  const musicToggle = document.getElementById('musicToggle');
+  const musicNext = document.getElementById('musicNext');
+
+  if(PLAYLIST.length <= 1) musicNext.classList.add('hidden');
+
+  function loadTrack(i){
+    if(!PLAYLIST.length) return;
+    currentTrack = (i + PLAYLIST.length) % PLAYLIST.length;
+    audioEl.src = PLAYLIST[currentTrack].src;
+  }
+
+  function updateMusicIcon(){
+    musicToggle.textContent = isPlaying ? '🔊' : '🔈';
+    musicToggle.title = PLAYLIST.length
+      ? (isPlaying ? `Sedang main: ${PLAYLIST[currentTrack].title}` : 'Putar musik')
+      : 'Belum ada file musik di PLAYLIST';
+  }
+
+  function toggleMusic(){
+    if(!PLAYLIST.length){
+      window.alert('Belum ada file musik. Tambahkan file mp3 ke folder audio/ lalu isi PLAYLIST di kode.');
+      return;
+    }
+    if(isPlaying){
+      audioEl.pause();
+      isPlaying = false;
+    } else {
+      if(!audioEl.src) loadTrack(currentTrack);
+      audioEl.play().catch(() => { window.alert('Gagal memutar file audio. Cek path filenya.'); });
+      isPlaying = true;
+    }
+    updateMusicIcon();
+  }
+
+  audioEl.addEventListener('ended', () => {
+    loadTrack(currentTrack + 1);
+    if(isPlaying) audioEl.play().catch(() => {});
+    updateMusicIcon();
+  });
+
+  musicToggle.addEventListener('click', toggleMusic);
+  musicNext.addEventListener('click', () => {
+    if(!PLAYLIST.length) return;
+    loadTrack(currentTrack + 1);
+    if(isPlaying) audioEl.play().catch(() => {});
+    updateMusicIcon();
+  });
+
+  updateMusicIcon();
 
   if('serviceWorker' in navigator){
     window.addEventListener('load', () => {
